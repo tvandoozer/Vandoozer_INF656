@@ -34,12 +34,18 @@ app.post("/log", (req, res) => {
 // Function to process and send logs every 2 minutes
 setInterval(() => {
   if (logs.length > 0) {
-    const summary = {
+    const summary = logs.map((log) => ({
+      action: log.action,
+      timestamp: log.timestamp,
+    }));
+
+    const batchSummary = {
       total: logs.length,
-      actions: logs.map((log) => log.action),
+      interactions: summary, // Include individual actions and timestamps
     };
 
-    console.log("Batch Summary:", summary);
+    // Log the batch summary to the console
+    console.log("Batch Summary:", batchSummary);
 
     // Clear logs after processing
     logs = [];
